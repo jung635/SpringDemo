@@ -1,6 +1,7 @@
 package com.jung.service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -52,6 +53,22 @@ public class MemberServiceImple implements MemberService{
 		mdao.deleteMember(id);
 		
 	}
+
+	@Override
+	public List<MemberBean> getList() throws Exception {
+		return mdao.getList();
+	}
+
+	@Override
+	public boolean dupIdCheck(String id) throws Exception {
+		System.out.println("id: "+id);
+		if(mdao.getInfo(id) == null){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
 	
 }
 

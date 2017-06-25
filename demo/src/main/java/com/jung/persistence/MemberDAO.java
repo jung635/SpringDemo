@@ -1,5 +1,7 @@
 package com.jung.persistence;
 
+import java.util.List;
+
 import com.jung.domain.MemberBean;
 
 public interface MemberDAO {
@@ -8,4 +10,5 @@ public interface MemberDAO {
 	public MemberBean getInfo(String id) throws Exception;
 	public void updateMember(MemberBean mb) throws Exception;
 	public void deleteMember(String id) throws Exception;
+	public List<MemberBean> getList() throws Exception;
 }

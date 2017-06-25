@@ -2,24 +2,32 @@ package com.jung.web;
 
 
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.reflection.SystemMetaObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.jung.domain.MemberBean;
+import com.jung.persistence.MemberDAO;
 import com.jung.service.CustomUserDetails;
 import com.jung.service.MemberService;
+import com.jung.service.RegisterRequestValidator;
 
 
 @Controller
@@ -37,9 +45,28 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
-	public String insertPost(MemberBean mb) throws Exception{
-		service.insertMember(mb);
-		return "redirect:/member/login";
+	public String insertPost(MemberBean mb, Errors error, Model model) throws Exception{
+		new RegisterRequestValidator().validate(mb, error);
+		if(error.hasErrors()){
+			model.addAttribute("mb", mb);
+			return "/member/insertForm";
+		}else{
+			System.out.println("nothingWrong");
+			service.insertMember(mb);
+			return "redirect:/member/login";
+		}
+	}
+	
+	@RequestMapping(value="/dupIdCheck", method=RequestMethod.GET)
+	public String dupIdCheckGet(boolean dupCheck, Model model) throws Exception{
+		model.addAttribute("dupCheck", dupCheck);
+		return "/member/dupIdCheck";
+	}
+	
+	@RequestMapping(value="/dupIdCheck", method=RequestMethod.POST)
+	public String dupIdCheckPost(MemberBean mb, Model model) throws Exception{
+		model.addAttribute("dupCheck", service.dupIdCheck(mb.getId())) ;
+		return "redirect:/member/dupIdCheck";
 	}
 	
 	@RequestMapping(value="/login", method={RequestMethod.GET,RequestMethod.POST})
@@ -140,6 +167,15 @@ public class MemberController {
 	
 	@RequestMapping(value="/login_duplicate", method=RequestMethod.GET)
 	public String loginDuplicate() throws Exception{
+		System.out.println("Dubplicated");
 		return "/member/loginDuplicate";
+	}
+	
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value="/list", method=RequestMethod.GET)
+	public String listGet(Model model) throws Exception{
+		List<MemberBean> list = service.getList();
+		model.addAttribute("list", list);
+		return "/member/list";
 	}
 }

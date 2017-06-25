@@ -10,7 +10,7 @@
 <body>
 <script type="text/javascript">
 	alert('다른곳에서 로그인되어 현재 상태는 로그아웃됩니다.');
-	location.href="<c:url value="/member/main"/>";
+	location.href="<c:url value="/member/login"/>";
 </script>
 </body>
 </html>

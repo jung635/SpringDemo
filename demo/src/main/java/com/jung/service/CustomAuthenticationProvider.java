@@ -28,8 +28,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		
 		String user_id = (String)authentication.getPrincipal();
 		String user_pass = (String)authentication.getCredentials();
-		List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
-		roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 
 		boolean isLogin = false;
 		try {
@@ -37,7 +35,15 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Collection<? extends GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+		
+		Collection<? extends GrantedAuthority> authorities;
+		
+		if(user_id.equals("admin")){
+			authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		}else{
+			authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+		}
+		
 		UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(user_id, user_pass, authorities);
 		if(isLogin){
 			result.setDetails(new CustomUserDetails(user_id, user_pass));

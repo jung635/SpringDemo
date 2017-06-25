@@ -9,9 +9,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<%String id=(String)session.getAttribute("id");%>
-<c:choose>
-<c:when test="${id eq 'admin'}">
 	<table border="1">
 		<th>아이디</th><th>비밀번호</th><th>이름</th><th>가입날짜</th><th>나이</th><th>성별</th><th>이메일</th>
  		<c:forEach items="${list }" var="mb">
@@ -20,13 +17,5 @@
 		<td>${mb.email }></td></tr>
 		</c:forEach>
 	</table>
-</c:when>
-<c:otherwise>
-		<script type="text/javascript">
-		alert('운영자가 아닙니다.');
-		location.href="<c:url value="/member/main"/>";
-		</script>
-</c:otherwise>
-</c:choose>
 </body>
 </html>

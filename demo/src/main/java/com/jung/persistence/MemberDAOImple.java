@@ -1,5 +1,7 @@
 package com.jung.persistence;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -39,6 +41,12 @@ public class MemberDAOImple implements MemberDAO{
 	@Override
 	public void deleteMember(String id) throws Exception {
 		sqlSession.delete(namespace+".deleteMember", id);
+	}
+
+	@Override
+	public List<MemberBean> getList() throws Exception {
+		return sqlSession.selectList(namespace+".getList");
+		
 	}
 	
 }

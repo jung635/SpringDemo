@@ -29,5 +29,9 @@
 		delete from member
 		where id=#{id}
 	</delete>
+	
+	<select id="getList" resultType="com.jung.domain.MemberBean">
+		select * from member
+	</select>
  
  </mapper>
