@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!-- 
+		CarMaker maker = new HyundaiMaker();
+		
+		OrderManager manager = new OrderManager();
+		manager.setMaker(maker);
+ -->
+ 
+ <bean id="hyundai" class="test3.HyundaiMaker"></bean>
+ <bean id="kia" class="test3.KiaMaker"></bean>
+ 
+ <bean id="manager" class="test3.OrderManager" init-method="init">
+ 	<!-- 필드변수 maker에 직접 넣는 것이 아니라 setMaker 세터메소드를 사용해서 주입한다. -->
+ 	<constructor-arg ref="kia"></constructor-arg>
+ 	<!-- <property name="maker" ref="kia"></property> -->
+ </bean>
+
+</beans>
