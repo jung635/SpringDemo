@@ -58,8 +58,8 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="/dupIdCheck", method=RequestMethod.GET)
-	public String dupIdCheckGet(boolean dupCheck, Model model) throws Exception{
-		model.addAttribute("dupCheck", dupCheck);
+	public String dupIdCheckGet(String dupId, Model model) throws Exception{
+		model.addAttribute("dupId", dupId);
 		return "/member/dupIdCheck";
 	}
 	

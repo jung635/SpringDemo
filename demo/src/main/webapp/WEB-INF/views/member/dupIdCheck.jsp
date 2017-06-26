@@ -7,9 +7,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>Insert title here</title>
 <script type="text/javascript">
-function goId(){
-	window.close();
-	wondow.opener.fr.id=
+function goId(id, dupCheck){
+	if(dupCheck){
+		wondow.opener.fr.id.value=id;
+		window.close();
+	}else{
+		alert('중복된 아이디입니다.');
+	}
+	
 }
 </script>
 </head>
@@ -18,7 +23,7 @@ function goId(){
 아이디: <input type="text">
 <input type="submit" value="중복확인">
 <c:if test="${dupCheck}">
-<input type="button" value="사용하기" onclick="goId()">
+<input type="button" value="사용하기" onclick="goId('${dupId}','${dupCheck}')">
 </c:if>
 </form>
 </body>

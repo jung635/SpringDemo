@@ -14,6 +14,7 @@ import com.jung.domain.MemberBean;
 public class RegisterRequestValidator implements Validator{
 	@Inject
 	MemberService service;
+	MemberServiceImple si = new MemberServiceImple();
 	private static final String emailRegExp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private static final String passRegExp = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~,!,@,#,$,*,(,),=,+,_,.,|]).{8,20}$";
@@ -43,7 +44,8 @@ public class RegisterRequestValidator implements Validator{
 			 errors.rejectValue("id", "bad");
 		}else{
 			try {
-				if(service.dupIdCheck(mb.getId())) errors.rejectValue("id", "duplicate");
+				//if(service.dupIdCheck(mb.getId())) errors.rejectValue("id", "duplicate");
+				if(si.dupIdCheck(mb.getId())) errors.rejectValue("id", "duplicate");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

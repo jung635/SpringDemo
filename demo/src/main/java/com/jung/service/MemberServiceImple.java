@@ -62,10 +62,10 @@ public class MemberServiceImple implements MemberService{
 	@Override
 	public boolean dupIdCheck(String id) throws Exception {
 		System.out.println("id: "+id);
-		if(mdao.getInfo(id) == null){
-			return false;
-		}else{
+		if(mdao.getInfo(id) != null){
 			return true;
+		}else{
+			return false;
 		}
 	}
 	

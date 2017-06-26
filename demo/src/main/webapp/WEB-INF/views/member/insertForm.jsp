@@ -10,7 +10,8 @@
 </head>
 <body>
 <form:form action="/web/member/insert" commandName="memberBean" method="post" name="fr">
- 아이디:<input type="text" name="id" value="${mb.id }"><form:errors path="id"/><br>
+ 아이디:<input type="text" name="id" value="${mb.id }"><form:errors path="id"/>
+ <input type="button" value="아이디 중복 확인" onclick="window.open('/member/dupIdCheck?dupId=${mb.id},'height=400 width=400')"><br>
 비밀번호 :<input type="password" name="pass" value="${mb.pass }"><form:errors path="pass"/><br>
 이름 :<input type="text" name="name" value="${mb.name }"><form:errors path="name"/><br>
 나이 :<input type="text" name="age" value="${mb.age }"><form:errors path="age"/><br>
