@@ -29,6 +29,7 @@ public class MemberDAOImple implements MemberDAO{
 
 	@Override
 	public MemberBean getInfo(String id) throws Exception {
+		System.out.println("idifno: "+id);
 		return sqlSession.selectOne(namespace+".getInfo", id);
 	}
 

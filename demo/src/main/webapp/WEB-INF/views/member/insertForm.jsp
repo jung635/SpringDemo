@@ -7,14 +7,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+function checkDupId(){
+	id = document.getElementById("id").value;
+	window.open('/web/member/dupIdCheck?dupId='+id,'IdDupCheck','height=400 width=400');
+}
+
+</script>
 </head>
 <body>
-<form:form action="/web/member/insert" commandName="memberBean" method="post" name="fr">
- 아이디:<input type="text" name="id" value="${mb.id }"><form:errors path="id"/>
- <input type="button" value="아이디 중복 확인" onclick="window.open('/member/dupIdCheck?dupId=${mb.id},'height=400 width=400')"><br>
+<form:form action="/web/member/insert" commandName="mb" method="post" name="fr">
+ 아이디:<input type="text" id="id" name="id" value="${mb.id }"><form:errors path="id"/>
+ <input type="button" value="아이디 중복 확인" onclick="checkDupId()"><br>
 비밀번호 :<input type="password" name="pass" value="${mb.pass }"><form:errors path="pass"/><br>
 이름 :<input type="text" name="name" value="${mb.name }"><form:errors path="name"/><br>
-나이 :<input type="text" name="age" value="${mb.age }"><form:errors path="age"/><br>
+나이 :<input type="number" name="age" value="${mb.age }"><form:errors path="age"/><br>
 성별 :<input type="radio" name="gender" value="남" <c:if test="${mb.gender eq '남' }">checked</c:if>>남
 <input type="radio" name="gender" value="여" <c:if test="${mb.gender eq '여' }">checked</c:if>>여<br>
 email :<input type="text" name="email" value="${mb.email }"><form:errors path="email"/><br>

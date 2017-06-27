@@ -29,7 +29,7 @@ public class RegisterRequestValidator implements Validator{
 	}
 
 	@Override
-	public void validate(Object target, Errors errors) {
+	public void validate(Object target, Errors errors){
 		MemberBean mb = (MemberBean)target;
 		
 		if(mb.getEmail()==null || mb.getEmail().trim().isEmpty()){
@@ -44,8 +44,7 @@ public class RegisterRequestValidator implements Validator{
 			 errors.rejectValue("id", "bad");
 		}else{
 			try {
-				//if(service.dupIdCheck(mb.getId())) errors.rejectValue("id", "duplicate");
-				if(si.dupIdCheck(mb.getId())) errors.rejectValue("id", "duplicate");
+				if(service.dupIdCheck(mb.getId())) errors.rejectValue("id", "duplicate");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -62,5 +61,6 @@ public class RegisterRequestValidator implements Validator{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "age", "required");
 		
 	}
+
 
 }

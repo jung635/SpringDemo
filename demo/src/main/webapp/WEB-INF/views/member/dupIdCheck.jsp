@@ -6,24 +6,41 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>Insert title here</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script type="text/javascript">
 function goId(id, dupCheck){
 	if(dupCheck){
-		wondow.opener.fr.id.value=id;
+		window.opener.fr.id.value=id;
 		window.close();
-	}else{
-		alert('중복된 아이디입니다.');
 	}
-	
 }
+
+function dupCheckFun(){
+	check = fr.dupCheck.value;
+	dupId = fr.id.value;
+	if(check == "true"){
+		document.getElementById("dupCheckResult").innerHTML = "사용가능한 아이디입니다.";
+	}else if(dupId == "" || check == "" ){
+		
+	}else{
+		document.getElementById("dupCheckResult").innerHTML = "중복되는 아이디입니다.";
+	}
+}
+
+$(document).ready(function(){
+	dupCheckFun();
+})
 </script>
 </head>
 <body>
-<form action="<c:url value='/memebr/dubIdCheck'/>">
-아이디: <input type="text">
+<form action="<c:url value='/member/dupIdCheck'/>" method="post" name="fr">
+<input type="hidden" name="dupCheck" value="${dupCheck }">
+아이디: <input type="text" name="id" value="${dupId}">
+<span id="dupCheckResult"></span>
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 <input type="submit" value="중복확인">
 <c:if test="${dupCheck}">
-<input type="button" value="사용하기" onclick="goId('${dupId}','${dupCheck}')">
+<input type="button" value="사용하기" onclick="goId('${dupId}',${dupCheck})">
 </c:if>
 </form>
 </body>

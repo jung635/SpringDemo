@@ -9,8 +9,9 @@
     <http auto-config='true' use-expressions='true'>
     	<intercept-url pattern="/member/login" access="isAnonymous()" />
     	<intercept-url pattern="/member/insert" access="isAnonymous()" />
+    	<intercept-url pattern="/member/dupIdCheck" access="isAnonymous()" />
     	<intercept-url pattern="/member/login_duplicate" access="permitAll()" />
-        <intercept-url pattern="/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
+		<intercept-url pattern="/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <!-- 
         login-page = 로그인 페이지
         username-parameter : form의 username을 저장한 변수

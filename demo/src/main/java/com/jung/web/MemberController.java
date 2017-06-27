@@ -13,6 +13,7 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -45,28 +47,25 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
-	public String insertPost(MemberBean mb, Errors error, Model model) throws Exception{
+	public String insertPost(@ModelAttribute("mb") MemberBean mb, Errors error, Model model) throws Exception{
 		new RegisterRequestValidator().validate(mb, error);
 		if(error.hasErrors()){
-			model.addAttribute("mb", mb);
 			return "/member/insertForm";
 		}else{
-			System.out.println("nothingWrong");
 			service.insertMember(mb);
 			return "redirect:/member/login";
 		}
 	}
-	
 	@RequestMapping(value="/dupIdCheck", method=RequestMethod.GET)
 	public String dupIdCheckGet(String dupId, Model model) throws Exception{
 		model.addAttribute("dupId", dupId);
 		return "/member/dupIdCheck";
 	}
-	
 	@RequestMapping(value="/dupIdCheck", method=RequestMethod.POST)
 	public String dupIdCheckPost(MemberBean mb, Model model) throws Exception{
 		model.addAttribute("dupCheck", service.dupIdCheck(mb.getId())) ;
-		return "redirect:/member/dupIdCheck";
+		model.addAttribute("dupId", mb.getId());
+		return "/member/dupIdCheck";
 	}
 	
 	@RequestMapping(value="/login", method={RequestMethod.GET,RequestMethod.POST})
