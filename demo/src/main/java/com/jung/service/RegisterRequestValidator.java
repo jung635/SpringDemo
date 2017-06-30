@@ -50,6 +50,7 @@ public class RegisterRequestValidator implements Validator{
 			}
 		}
 		
+		
 		if(mb.getPass()==null || mb.getPass().trim().isEmpty()){
 			errors.rejectValue("pass", "required");
 		}else{
