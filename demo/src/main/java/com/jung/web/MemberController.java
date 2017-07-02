@@ -9,24 +9,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.reflection.SystemMetaObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.jung.domain.MemberBean;
-import com.jung.persistence.MemberDAO;
 import com.jung.service.CustomUserDetails;
 import com.jung.service.MemberService;
 import com.jung.service.RegisterRequestValidator;
@@ -40,15 +36,18 @@ public class MemberController {
 	@Inject
 	private MemberService service;
 	
+	@Inject
+	private RegisterRequestValidator validator;
+	
 	@RequestMapping(value="/insert", method=RequestMethod.GET)
 	public String insertGet() throws Exception{
-		logger.info("/member/insert get => /member/insertForm ÀÌµ¿");
+		logger.info("/member/insert get => /member/insertForm ï¿½Ìµï¿½");
 		return "/member/insertForm";
 	}
 	
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
 	public String insertPost(@ModelAttribute("mb") MemberBean mb, Errors error, Model model) throws Exception{
-		new RegisterRequestValidator().validate(mb, error);
+		validator.validate(mb, error);
 		if(error.hasErrors()){
 			return "/member/insertForm";
 		}else{
@@ -70,13 +69,13 @@ public class MemberController {
 	
 	@RequestMapping(value="/login", method={RequestMethod.GET,RequestMethod.POST})
 	public String loingGet() throws Exception{
-		logger.info("/member/login get => /member/loginForm ÀÌµ¿");
+		logger.info("/member/login get => /member/loginForm ï¿½Ìµï¿½");
 		return "/member/loginForm";
 	}
 	
 	@RequestMapping(value="/login_success", method={RequestMethod.GET,RequestMethod.POST})
 	public String loginPost(MemberBean mb, HttpSession session, HttpServletResponse response) throws Exception{
-		logger.info("login PostÀÌµ¿");
+		logger.info("login Postï¿½Ìµï¿½");
 		CustomUserDetails userDetails = (CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
 		session.setAttribute("id", userDetails.getUsername());
 			
@@ -103,7 +102,7 @@ public class MemberController {
 		String id = (String)session.getAttribute("id");
 		MemberBean mb = service.getInfo(id);
 		if(mb.getGender() == null){
-			mb.setGender("³²");
+			mb.setGender("ï¿½ï¿½");
 		}
 		
 		model.addAttribute("mb", mb);
@@ -120,10 +119,10 @@ public class MemberController {
 		if(isMatch){
 			service.updateMember(mb);
 			url = "ok";
-			mesg = "¾÷µ¥ÀÌÆ®¿¡ ¼º°øÇÏ¿´½À´Ï´Ù";
+			mesg = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½";
 		}else{
 			url = "notOk";
-			mesg = "ºñ¹Ð¹øÈ£¸¦ ´Ù½ÃÇÑ¹ø È®ÀÎÇØÁÖ¼¼¿ä.";
+			mesg = "ï¿½ï¿½Ð¹ï¿½È£ï¿½ï¿½ ï¿½Ù½ï¿½ï¿½Ñ¹ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
 		}
 		
 		model.addAttribute("url", url);
@@ -152,10 +151,10 @@ public class MemberController {
 			}
 			service.deleteMember(id);
 			url = "ok";
-			mesg = "¼º°øÀûÀ¸·Î È¸¿øÅ»Åð µÇ¾ú½À´Ï´Ù.";
+			mesg = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½Å»ï¿½ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.";
 		}else{
 			url = "notOk";
-			mesg = "ºñ¹Ð¹øÈ£¸¦ È®ÀÎÇØÁÖ¼¼¿ä.";
+			mesg = "ï¿½ï¿½Ð¹ï¿½È£ï¿½ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
 		}
 		
 		model.addAttribute("url", url);

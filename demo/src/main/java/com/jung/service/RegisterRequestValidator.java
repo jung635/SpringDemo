@@ -1,20 +1,21 @@
 package com.jung.service;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
+import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.jung.domain.MemberBean;
-		
+
+@Service
 public class RegisterRequestValidator implements Validator{
 	@Inject
-	MemberService service;
-	MemberServiceImple si = new MemberServiceImple();
+	private MemberService service;
+	
 	private static final String emailRegExp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private static final String passRegExp = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~,!,@,#,$,*,(,),=,+,_,.,|]).{8,20}$";
@@ -22,10 +23,10 @@ public class RegisterRequestValidator implements Validator{
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return MemberBean.class.isAssignableFrom(clazz); //ÆÄ¶ó¹ÌÅÍ·Î ¹ÞÀº clazzÅ¸ÀÔÀÇ °´Ã¼°¡ MemberBeanÅ¬ ¿©±â¼­´Â supports() ¸Þ¼­µå¸¦ »ç¿ëÇÏÁö ¾ÊÁö¸¸
-		//Å¬·¡½º·Î Å¸ÀÔ º¯È¯ÀÌ °¡´ÉÇÑÁö È®ÀÎ. 
-		//¿©±â¼­´Â supports()¸Þ¼­µå¸¦ »ç¿ë ¾ÈÇÏÁö¸¸ 
-		//½ºÇÁ¸µ MVC°¡ ÀÚµ¿À¸·Î °ËÁõÀ» ¼öÇàÇÏµµ·Ï ¼³Á¤ÇÏ´Â °æ¿ì supports()¸Þ¼­µå¸¦ ¿Ã¹Ù¸£°Ô ±¸ÇöÇØÁÖ¾î¾ß ÇÑ´Ù.
+		return MemberBean.class.isAssignableFrom(clazz); //ï¿½Ä¶ï¿½ï¿½ï¿½Í·ï¿½ ï¿½ï¿½ï¿½ï¿½ clazzÅ¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ MemberBeanÅ¬ ï¿½ï¿½ï¿½â¼­ï¿½ï¿½ supports() ï¿½Þ¼ï¿½ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½. 
+		//ï¿½ï¿½ï¿½â¼­ï¿½ï¿½ supports()ï¿½Þ¼ï¿½ï¿½å¸¦ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MVCï¿½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ supports()ï¿½Þ¼ï¿½ï¿½å¸¦ ï¿½Ã¹Ù¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½ ï¿½Ñ´ï¿½.
 	}
 
 	@Override
@@ -44,12 +45,16 @@ public class RegisterRequestValidator implements Validator{
 			 errors.rejectValue("id", "bad");
 		}else{
 			try {
-				if(service.dupIdCheck(mb.getId())) errors.rejectValue("id", "duplicate");
+				if(service == null){
+					System.out.println("null");
+				}
+				else{
+					if(!service.dupIdCheck(mb.getId())) errors.rejectValue("id", "duplicate");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
 		
 		if(mb.getPass()==null || mb.getPass().trim().isEmpty()){
 			errors.rejectValue("pass", "required");
@@ -60,7 +65,6 @@ public class RegisterRequestValidator implements Validator{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "pass", "required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "age", "required");
-		
 	}
 
 

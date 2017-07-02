@@ -5,22 +5,18 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.jung.domain.MemberBean;
 import com.jung.persistence.MemberDAO;
-import com.jung.persistence.MemberDAOImple;
 
 @Service
 public class MemberServiceImple implements MemberService{
 
 	@Inject
-	MemberDAO mdao;
+	private MemberDAO mdao;
 	@Inject
-	PasswordEncoding passwordEncoder;
-	MemberDAOImple mdaoI;
+	private PasswordEncoding passwordEncoder;
 	
 	@Override
 	public void insertMember(MemberBean mb) throws Exception {
@@ -63,12 +59,9 @@ public class MemberServiceImple implements MemberService{
 
 	@Override
 	public boolean dupIdCheck(String id) throws Exception {
-		System.out.println("id:"+id);
 		if(mdao.getInfo(id) == null){
-			System.out.println("false");
 			return true;
 		}else{
-			System.out.println("true");
 			return false;
 		}
 	}

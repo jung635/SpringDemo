@@ -13,10 +13,28 @@ function checkDupId(){
 	window.open('/web/member/dupIdCheck?dupId='+id,'IdDupCheck','height=400 width=400');
 }
 
+function submitCheck(){
+	if(document.fr.id.value == ""){
+		alert("아이디를 입력해주세요");
+		return false;
+	}else if(document.fr.pass.value == ""){
+		alert("비밀번호를 입력해주세요");
+		return false;
+	}else if(document.fr.name.value == ""){
+		alert("이름을 입력해주세요");
+		return false;
+	}else if(document.fr.email.value == ""){
+		alert("이메일을 입력해주세요");
+		return false;
+	}else if(document.fr.age.value == ""){
+		document.fr.age.value = 0;
+		return true;
+	}
+}
 </script>
 </head>
 <body>
-<form:form action="/web/member/insert" commandName="mb" method="post" name="fr">
+<form:form action="/web/member/insert" commandName="mb" method="post" name="fr" onsubmit="return submitCheck()">
  아이디:<input type="text" id="id" name="id" value="${mb.id }"><form:errors path="id"/>
  <input type="button" value="아이디 중복 확인" onclick="checkDupId()"><br>
 비밀번호 :<input type="password" name="pass" value="${mb.pass }"><form:errors path="pass"/><br>
